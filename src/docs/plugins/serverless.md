@@ -164,6 +164,8 @@ exports.handler = handler;
 
 #### Use with On-demand Builders
 
+_Note: As of right now, On-demand Builders are a Netlify specific feature._
+
 If, instead, you want to use an [On-demand Builder](https://docs.netlify.com/configure-builds/on-demand-builders/) to render the content on first-request and cache at the CDN for later requests, swap the export in your template:
 
 ```js
@@ -284,7 +286,7 @@ Here’s what your Serverless Global Data might look like:
 }
 ```
 
-#### Escaping User Input
+### Escaping User Input
 
 When using dynamic slugs or query parameters, the values here should be treated as potentially malicious user input and you _must_ escape these if you use them in templates. The way to do this is template language specific.
 
