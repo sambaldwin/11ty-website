@@ -58,21 +58,16 @@ const shortcodes = {
 			(linkUrl ? `</a>` : "");
 	},
 	getScreenshotHtml: function(siteSlug, siteUrl, sizes) {
-		let withJs = true;
 		let viewport = {
 			width: 420,
-			height: 460,
+			height: 420,
 		};
 
-		let localhostEnv = "https://www.11ty.dev";
-		let forcedHost = !process.env.DEPLOY_PRIME_URL ? localhostEnv : "";
-		let screenshotPath = `/api/screenshot/${encodeURIComponent(siteUrl)}/${viewport.width}x${viewport.height}/`;
-		if(siteSlug === "11ty" || siteSlug === "foursquare") {
-			forcedHost = "";
-			screenshotPath = `/img/screenshot-fallbacks/${siteSlug}.jpg`;
-		}
+		let screenshotUrl = `https://api.11ty.dev/screenshot/1.0/${encodeURIComponent(siteUrl)}/small/`;
 
-		let screenshotUrl = `${forcedHost}${screenshotPath}`;
+		if(siteSlug === "11ty" || siteSlug === "foursquare") {
+			screenshotUrl = `/img/screenshot-fallbacks/${siteSlug}.jpg`;
+		}
 
 		let options = {
 			formats: ["jpeg"], // we don’t use AVIF here because it was a little too slow!
@@ -129,7 +124,7 @@ module.exports = function(eleventyConfig) {
 		name: "serverless",
 		inputDir: "src",
 		functionsDir: "./netlify/functions/",
-		copyEnabled: process.env.NODE_ENV === "production",
+		// copyEnabled: process.env.NODE_ENV === "production",
 		copy: [
 			"config/",
 			"avatars/",
@@ -144,7 +139,7 @@ module.exports = function(eleventyConfig) {
 		name: "dynamic",
 		inputDir: "src",
 		functionsDir: "./netlify/functions/",
-		copyEnabled: process.env.NODE_ENV === "production",
+		// copyEnabled: process.env.NODE_ENV === "production",
 		copy: [
 			"config/",
 			"avatars/",
