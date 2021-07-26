@@ -30,6 +30,10 @@ What is the difference between Local and [Global installation](/docs/global-inst
 
 ### Windows
 
+Read more about [Windows environment variables](https://www.npmjs.com/package/debug#windows-command-prompt-notes).
+
+#### cmd.exe
+
 What is the difference between Local and [Global installation](/docs/global-installation/)?
 
 <div class="lo" style="--lo-stackpoint: 30em; --lo-margin-h: 1em; --lo-margin-v: .5em">
@@ -42,7 +46,20 @@ What is the difference between Local and [Global installation](/docs/global-inst
 	<div class="lo-c lo-maxgrow">{% highlight "bash" %}set DEBUG=Eleventy* & eleventy{% endhighlight %}</div>
 </div>
 
-Read more about [Windows environment variables](https://www.npmjs.com/package/debug#windows-command-prompt-notes).
+#### Powershell (VS Code default)
+
+What is the difference between Local and [Global installation](/docs/global-installation/)?
+
+<div class="lo" style="--lo-stackpoint: 30em; --lo-margin-h: 1em; --lo-margin-v: .5em">
+	<div class="lo-c">Installed Locally</div>
+	<div class="lo-c lo-maxgrow">{% highlight "bash" %}$env:DEBUG="Eleventy*"; npx @11ty/eleventy{% endhighlight %}</div>
+</div>
+
+<div class="lo" style="--lo-stackpoint: 30em; --lo-margin-h: 1em; --lo-margin-v: .5em">
+	<div class="lo-c">Installed Globally</div>
+	<div class="lo-c lo-maxgrow">{% highlight "bash" %}$env:DEBUG="Eleventy*"; eleventy{% endhighlight %}</div>
+</div>
+`
 
 ## Learn More
 
@@ -59,3 +76,7 @@ The commands above limit the messages from `debug` to Eleventy specific things w
 ### Analyze Performance
 
 {% addedin "0.11.0" %} Read more about how to [use `debug` to analyze the performance of your Eleventy build](/docs/debug-performance/).
+
+## Debug individual variables
+
+{% addedin "0.11.0" %} In addition to using `debug`, you can use the global filter [`log`](/docs/filters/log) to `console.log` anything from inside a template file.
