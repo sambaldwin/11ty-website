@@ -182,6 +182,8 @@ Nunjucks and Liquid engines are supported. If you’re tired of reading, just us
 
 ### To Markdown
 
+{% addedin "Navigation 0.3.1" %}
+
 {% codetitle "Nunjucks", "Syntax" %}
 
 {% raw %}
@@ -318,6 +320,17 @@ And an array of all the parents of the Bats entry will be returned (top-most par
 ]
 ```
 
+##### Include the current page in breadcrumb results
+
+{% codetitle "Nunjucks", "Syntax" %}
+
+{% raw %}
+```
+{% set navPages = collections.all | eleventyNavigationBreadcrumb("Bats", { includeSelf: true }) %}
+{{ navPages | dump | safe }}
+```
+{% endraw %}
+
 ### Render the menu items using the `eleventyNavigationToHtml` or `eleventyNavigationToMarkdown` Filters
 
 There are a couple of methods for rendering. Using the `eleventyNavigationToHtml` and `eleventyNavigationToMarkdown` filters will render the full navigation tree. Use this if you want to easily scale to an unlimited number of tiers/levels in your navigation. If you want full control of the markup, [render the structure manually using the Copy and Paste templates example below](#bring-your-own-html-render-the-menu-items-manually). Use this if your navigation will have one level/tier of items.
@@ -325,6 +338,8 @@ There are a couple of methods for rendering. Using the `eleventyNavigationToHtml
 <div id="render-with-a-filter"></div>
 
 With the Navigation structure returned from `eleventyNavigation` or `eleventyNavigationBreadcrumb`, we can render the navigation. Pass the object to the  `eleventyNavigationToHtml` or `eleventyNavigationToMarkdown` filter to automatically output the full menu (as HTML or Markdown):
+
+The `eleventyNavigationToMarkdown` filter is {% addedin "Navigation 0.3.1" %}.
 
 {% codetitle "Nunjucks", "Syntax" %}
 
@@ -373,6 +388,8 @@ When you render a navigation list, pass `showExcerpt: true` to the `eleventyNavi
 {% endraw %}
 
 #### Advanced: All Rendering Options for `eleventyNavigationToMarkdown`
+
+{% addedin "Navigation 0.3.1" %}
 
 {% codetitle "Nunjucks", "Syntax" %}
 
@@ -423,6 +440,8 @@ If you find yourself using a lot of these `class` options, maybe you should use 
 ### Bring your own HTML: Render the menu items manually
 
 This template will render a single tier of items (no children) _without_ using the `eleventyNavigationToHtml` or `eleventyNavigationToMarkdown` filters. This method gives you full control of the markup but is more complex with deeply nested menu structures.
+
+Note that `eleventyNavigationToMarkdown` is {% addedin "Navigation 0.3.1" %}.
 
 {% codetitle "Nunjucks", "Syntax" %}
 
