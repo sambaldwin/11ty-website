@@ -57,6 +57,29 @@ const shortcodes = {
 			content +
 			(linkUrl ? `</a>` : "");
 	},
+	image: async function(filepath, alt, widths, classes, sizes) {
+		let options = {
+			formats: ["avif", "webp", "png"],
+			widths: widths || [null],
+			urlPath: "/img/built/",
+			outputDir: "_site/img/built/",
+		};
+
+		let stats;
+		if(process.env.ELEVENTY_SERVERLESS) {
+			stats = eleventyImage.statsSync(filepath, options);
+		} else {
+			stats = await eleventyImage(filepath, options);
+		}
+
+		return eleventyImage.generateHTML(stats, {
+			alt,
+			loading: "lazy",
+			decoding: "async",
+			sizes: sizes || "(min-width: 22em) 30vw, 100vw",
+			class: classes,
+		});
+	},
 	getScreenshotHtml: function(siteSlug, siteUrl, sizes) {
 		let viewport = {
 			width: 375,
@@ -131,6 +154,7 @@ module.exports = function(eleventyConfig) {
 			"avatars/",
 			"src/img/logo.svg",
 			"src/img/gift.svg",
+			"src/img/possum-geri.png",
 			"_generated-serverless-collections.json",
 			{ from: ".cache/eleventy-cache-assets/", to: "cache" },
 		]
@@ -146,6 +170,7 @@ module.exports = function(eleventyConfig) {
 			"avatars/",
 			"src/img/logo.svg",
 			"src/img/gift.svg",
+			"src/img/possum-geri.png",
 			"_generated-serverless-collections.json",
 			{ from: ".cache/eleventy-cache-assets/", to: "cache" },
 		]
@@ -187,6 +212,7 @@ module.exports = function(eleventyConfig) {
 			(alt ? `<span class="sr-only">${alt}</span>` : "");
 	});
 
+	eleventyConfig.addNunjucksAsyncShortcode("image", shortcodes.image);
 	eleventyConfig.addShortcode("avatarlocalcache", shortcodes.avatar);
 	eleventyConfig.addShortcode("getScreenshotHtml", shortcodes.getScreenshotHtml);
 
