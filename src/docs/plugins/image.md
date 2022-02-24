@@ -8,19 +8,20 @@ communityLinksKey: image
 ---
 Low level utility to perform build-time image transformations for both vector and raster images. Output multiple sizes, save multiple formats, cache remote images locally. Uses the [sharp](https://sharp.pixelplumbing.com/) image processor.
 
-You maintain full control of your HTML—this plugin does not generate any markup. Use with `<picture>` or `<img>` or CSS `background-image`, or others! Works great to add `width` and `height` to your images! Does not require or rely on file extensions (like `.png` or `.jpg`) in URLs or local files, which may be missing or inaccurate.
+* [`eleventy-img` on GitHub](https://github.com/11ty/eleventy-img)
+
+You maintain full control of your HTML—this plugin does not generate any markup. Use with `<picture>` or `<img>` or CSS `background-image`, or others! Works great to add `width` and `height` to your images!
 
 * Accepts: `jpeg`, `png`, `webp`, `gif`, `tiff`, `avif` {% addedin "Image 0.6.0" %}, and `svg`.
-* Output multiple sizes, keeps original aspect ratio. Never upscales raster images larger than original size (unless using SVG input).
+* Output multiple sizes, keeps original aspect ratio. Never upscales raster images larger than original size (exception for SVG input).
 * Output multiple formats, supports: `jpeg`, `png`, `webp`, `avif` {% addedin "Image 0.6.0" %}, and `svg` (requires SVG input)
 * Retrieve metadata about your new images (see [sample return object](#sample-return-object)).
   * Use this to add `width` and `height` attributes on `<img>` elements for [proper aspect ratio mapping](https://developer.mozilla.org/en-US/docs/Web/Media/images/aspect_ratio_mapping).
+* Does not require or rely on file extensions (like `.png` or `.jpg`) in URLs or local files, which may be missing or inaccurate.
 * Save remote images locally using [`eleventy-cache-assets`](/docs/plugins/cache/).
   * Use local images in your HTML to prevent broken image URLs.
   * Manage the [cache duration](/docs/plugins/cache/#change-the-cache-duration).
-* De-duplicates and caches repeat calls using the same source image and the same output options. {% addedin "Image 0.7.0" %}
-* Manage plugin concurrency.
-* [`eleventy-img` on GitHub](https://github.com/11ty/eleventy-img)
+* Fast: de-duplicates image requests and use both an in-memory and disk cache.
 
 ---
 
@@ -442,9 +443,9 @@ module.exports = function(eleventyConfig) {
 
 ### Caching
 
-#### In-Memory Cache {% addedin "Image 0.7.0" %}
+#### In-Memory Cache
 
-To prevent duplicate work and improve build performance, repeated calls to the same source image (remote or local) with the same options will return a cached results object. If a request in-progress, the pending promise will be returned. This in-memory cache is maintained across builds in watch/serve mode.
+{% addedin "Image 0.7.0" %} To prevent duplicate work and improve build performance, repeated calls to the same source image (remote or local) with the same options will return a cached results object. If a request in-progress, the pending promise will be returned. This in-memory cache is maintained across builds in watch/serve mode. If you quit Eleventy, the in-memory cache will be lost.
 
 Images will be regenerated (and the cache ignored) if:
 
@@ -493,9 +494,11 @@ const Image = require("@11ty/eleventy-img");
 
 </details>
 
-#### Disk Cache {% addedin "Image 1.0.0" %}
+#### Disk Cache
 
-Starting in Eleventy Image 1.0 (when using the built-in hashing algorithm and not custom filenames), Eleventy will skip processing files that are unchanged and already exist in the output directory. While the previously available in-memory cache avoided processing across repeat builds during `--watch` and `--serve`, this will avoid processing unchanged files for all builds. <a href="https://github.com/11ty/eleventy-img/issues/51">Read more at Issue #51</a>.
+{% addedin "Image 1.0.0" %} Eleventy will skip processing files that are unchanged and already exist in the output directory. This requires the built-in hashing algorithm and is not yet supported with custom filenames. More background at <a href="https://github.com/11ty/eleventy-img/issues/51">Issue #51</a>.
+
+New tip: [**Re-use and persist the disk cache across Netlify builds**](https://github.com/11ty/demo-eleventy-img-netlify-cache)
 
 ### Dry-Run
 
